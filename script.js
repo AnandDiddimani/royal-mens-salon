@@ -28,17 +28,31 @@
         toggle.classList.remove('is-open');
         links.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
         document.body.style.overflow = '';
     };
     toggle.addEventListener('click', function () {
         var open = links.classList.toggle('is-open');
         toggle.classList.toggle('is-open', open);
         toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
         document.body.style.overflow = open ? 'hidden' : '';
     });
     links.querySelectorAll('a').forEach(function (a) {
         a.addEventListener('click', closeMenu);
     });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && links.classList.contains('is-open')) {
+            closeMenu();
+            toggle.focus();
+        }
+    });
+    var mobileLayout = window.matchMedia('(max-width: 980px)');
+    if (mobileLayout.addEventListener) {
+        mobileLayout.addEventListener('change', closeMenu);
+    } else {
+        mobileLayout.addListener(closeMenu);
+    }
 
     /* Scroll reveal */
     var revealEls = document.querySelectorAll('.reveal');

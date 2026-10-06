@@ -88,63 +88,6 @@
         start();
     }
 
-    /* Booking form */
-    var form = document.getElementById('bookingForm');
-    var success = document.getElementById('bookingSuccess');
-    if (form) {
-        var dateInput = document.getElementById('date');
-        if (dateInput) {
-            var now = new Date();
-            var today = [
-                now.getFullYear(),
-                String(now.getMonth() + 1).padStart(2, '0'),
-                String(now.getDate()).padStart(2, '0')
-            ].join('-');
-            dateInput.min = today;
-        }
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            var formData = new FormData(form);
-            var preferredDate = formData.get('date').split('-');
-            var dateLabel = new Date(
-                Number(preferredDate[0]),
-                Number(preferredDate[1]) - 1,
-                Number(preferredDate[2])
-            ).toLocaleDateString('en-IN', {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-            var timeLabel = new Date('1970-01-01T' + formData.get('time')).toLocaleTimeString('en-IN', {
-                hour: 'numeric',
-                minute: '2-digit'
-            });
-            var message = [
-                'Hello Royal Men\'s Beauty Salon, I would like to request an appointment.',
-                '',
-                'Name: ' + formData.get('name'),
-                'Phone: ' + formData.get('phone'),
-                'Service: ' + formData.get('service'),
-                'Preferred date: ' + dateLabel,
-                'Preferred time: ' + timeLabel
-            ];
-            if (formData.get('email')) message.push('Email: ' + formData.get('email'));
-            if (formData.get('notes')) message.push('Notes: ' + formData.get('notes'));
-
-            var whatsappLink = document.getElementById('bookingWhatsAppLink');
-            whatsappLink.href = 'https://wa.me/918088828734?text=' + encodeURIComponent(message.join('\n'));
-            success.hidden = false;
-            window.open(whatsappLink.href, '_blank', 'noopener,noreferrer');
-            success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
-    }
-
     /* Footer year */
     var yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
